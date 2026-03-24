@@ -108,7 +108,15 @@ function nscan() {
 
     # Create scans directory if it doesn't exist
     mkdir -p scans
-    tmux new-window -n "Nmap-Scan" "nmap -vv -A -Pn $target | tee -a scans/nmap_$(date +%s).log; echo -e '\a\nScan Finished.'; read -p 'Press Enter to exit...'"
+    local cmd="nmap -vv -A -Pn $target | tee -a scans/nmap_$(date +%s).log; echo -e '\a\nScan Finished.'; read -p 'Press Enter to exit...'"
+    
+    if tmux has-session 2>/dev/null; then
+        tmux new-window -n "Nmap-Scan" "$cmd"
+        echo -e "\033[01;32m[+] Scan started in a new tmux window.\033[00m"
+    else
+        tmux new-session -d -s "bg_scans" -n "Nmap-Scan" "$cmd"
+        echo -e "\033[01;32m[+] Scan started in background tmux session 'bg_scans'. Use 'tmux attach -t bg_scans' to view.\033[00m"
+    fi
 }
 
 function upnow() {
@@ -190,38 +198,7 @@ else
     echo -e "\033[01;33m[*] BlindHacker execution hook already exists in ~/.bashrc\033[00m"
 fi
 
-# 4. Create README.md in current directory
-echo -e "\033[01;34m[+] Generating README.md...\033[00m"
-cat << 'EOF' > README.md
-# 💀 BlindHacker Terminal (v9.2.4)
-**High-Speed, High-Contrast, Accessible Pentesting Shell**
-
-A hardened Linux environment for Kali and WSL, optimized for visually impaired offensive security professionals.
-
-## Features
-- **High-Contrast Prompt**: Easy to read colors, clear status indicators `[OK]` / `[FAIL]`.
-- **Target Management**: Easily manage targets using `set-target` and access them via `$T1`, `$T`, etc.
-- **Audio Feedback**: Terminal bells chime on successes and dual-chime on failures.
-- **Workspace Generation**: Quick-start new engagements with `new-client`.
-- **Background Scans**: `nscan` pushes nmap scans to tmux windows so you don't stall your main session.
-- **Quick Restore**: Easy `restore-bashrc` command if you want your original `.bashrc` back.
-
-## Installation
-Just run the install script:
-```bash
-chmod +x install_blindhacker.sh
-./install_blindhacker.sh
-source ~/.bashrc
-```
-
-## Shortcuts and Commands
-- `new-client [Name]` : Setup /scans, /loot, /targets folders for a new workspace.
-- `set-target [IPs]`  : Define `$T1`, `$T2`, and `$T_ALL`.
-- `nscan [IP]`        : Verbose Nmap in tmux + Audio Alert. (If no IP is passed, uses `$T`).
-- `upnow`             : Turbo-update system (uses `apt-fast` or `apt`) + Audio Alert.
-- `help-bh`           : Show the help command list.
-- `restore-bashrc`    : Restore your previous `~/.bashrc` backup.
-EOF
+# (README generation removed to prevent overwriting user directories when installing via curl)
 
 echo -e "\033[01;32m[+] Installation Complete!\033[00m"
 echo -e "\033[01;33m[*] Please run 'source ~/.bashrc' or restart your terminal to activate BlindHacker.\033[00m"
