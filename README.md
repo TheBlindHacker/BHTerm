@@ -13,8 +13,16 @@ A hardened Linux environment for Kali and WSL, optimized for visually impaired o
 - **DevSecOps Ready**: Automated backups, safe parsing, and no hardcoded credentials.
 
 ## Installation
-Just run the install script:
+You can install BHTerm directly via `curl`:
 ```bash
+curl -sL https://raw.githubusercontent.com/TheBlindHacker/BHTerm/main/install_blindhacker.sh | bash
+source ~/.bashrc
+```
+
+Or by cloning the repository and running the script manually:
+```bash
+git clone https://github.com/TheBlindHacker/BHTerm.git
+cd BHTerm
 chmod +x install_blindhacker.sh
 ./install_blindhacker.sh
 source ~/.bashrc
