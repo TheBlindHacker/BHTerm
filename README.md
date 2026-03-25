@@ -65,6 +65,12 @@ cd BHTerm
 . $PROFILE
 ```
 
+### Optional: Automate Full-System Upgrades on Install
+By default, BHTerm does **not** upgrade your entire OS software suite during installation to save time (though it will install Nmap if missing). If you want the installer to update your entire system via Winget or Chocolatey automatically:
+1. Open `install_BHTerm_Windows.ps1` in a text editor before running it.
+2. Remove the `<#` and `#>` block around the `[+] Running winget upgrade` section at Line 24.
+*(Note: You can still manually update your entire system at any time by running the `upnow` command from within BHTerm).*
+
 ---
 
 ## Shortcuts and Commands

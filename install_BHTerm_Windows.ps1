@@ -31,6 +31,9 @@ if (Get-Command winget -ErrorAction SilentlyContinue) {
     Write-Host "[-] Neither Winget nor Chocolatey found. Manual installation of tools like Nmap may be required." -ForegroundColor Red
 }
 
+Write-Host "[*] Skipping Automated System-Wide Updates by default (to save installation time)." -ForegroundColor Cyan
+Write-Host "[*] System updates can still be triggered anytime using the 'upnow' command." -ForegroundColor Cyan
+<#
 Write-Host "[*] Executing System-Wide Updates..." -ForegroundColor Cyan
 if ($pm -eq "winget") {
     Write-Host "[+] Running winget upgrade --all (System Update)..." -ForegroundColor Yellow
@@ -39,6 +42,7 @@ if ($pm -eq "winget") {
     Write-Host "[+] Running choco upgrade all -y (System Update)..." -ForegroundColor Yellow
     choco upgrade all -y
 }
+#>
 
 Write-Host ""
 Write-Host "[*] Checking for Nmap..." -ForegroundColor Cyan
